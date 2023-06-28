@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -157,7 +158,7 @@ namespace eSocialXML
 						IndRetif = GetIndRetifValue((string)IndRetifCb.SelectedItem).ToString(),
 						TpAmb = GetTpAmbValue((string)TpAmbCb.SelectedItem).ToString(),
 						ProcEmi = "1", //Aplicativo do empregador
-						VerProc = "1.0"
+						VerProc = "S-1.0"
 					},
 					IdeEmpregador = new IdeEmpregador()
 					{
@@ -189,7 +190,7 @@ namespace eSocialXML
 						}
 					}
 				};
-				string fileName = $"{ESocial.EvtMonit.Id}.xml";
+				string fileName = $"S-2220-{ESocial.EvtMonit.Id}.xml";
 				string fileDestination = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{fileName}";
 
 				saveFileDialog1.Title = "Salvar XML eSocial";
@@ -207,7 +208,12 @@ namespace eSocialXML
 				var xmlns = new XmlSerializerNamespaces();
 				xmlns.Add("", defaultNamespace);
 
-				using (StreamWriter writer = new StreamWriter(fileDestination))
+				//using (StreamWriter writer = new StreamWriter(fileDestination))
+				//{
+				//	serializer.Serialize(writer, ESocial, xmlns);
+				//}
+				XmlWriterSettings settings = new XmlWriterSettings() { Indent = false };
+				using (XmlWriter writer = XmlWriter.Create(fileDestination, settings))
 				{
 					serializer.Serialize(writer, ESocial, xmlns);
 				}
